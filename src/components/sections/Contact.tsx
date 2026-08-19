@@ -9,6 +9,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { LottieIcon } from "@/components/ui/LottieIcon";
 import { LottieAside } from "@/components/ui/LottieAside";
 import { useI18n } from "@/lib/i18n";
+import { prefetchLottie } from "@/lib/lottie-cache";
 
 
 
@@ -54,6 +55,9 @@ export function Contact({ showHeading = true }: { showHeading?: boolean } = {}) 
         <Reveal>
           <form
             onSubmit={handleSubmit(onSubmit)}
+            // Warm the success animation as soon as the user starts typing, so
+            // it is already cached when the form flips to the sent state.
+            onFocusCapture={() => prefetchLottie("/lottie/contact-success.lottie")}
             className="rounded-2xl bg-card border border-border shadow-[var(--shadow-glow)] space-y-5 p-7"
           >
             <div>
