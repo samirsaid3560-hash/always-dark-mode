@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { useTheme } from "@/lib/theme";
 import { useI18n } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { prefetchRouteLottie } from "@/lib/lottie-routes";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -105,6 +106,9 @@ export function Navbar() {
             <Link
               key={l.key}
               to={l.to}
+              onMouseEnter={() => prefetchRouteLottie(l.to)}
+              onFocus={() => prefetchRouteLottie(l.to)}
+              onTouchStart={() => prefetchRouteLottie(l.to)}
               className="font-sans text-[11px] font-extrabold tracking-[0.25em] text-foreground transition-opacity hover:opacity-75 uppercase"
             >
               {tr(l.key)}
@@ -193,6 +197,8 @@ export function Navbar() {
               key={l.key}
               to={l.to}
               onClick={() => setOpen(false)}
+              onTouchStart={() => prefetchRouteLottie(l.to)}
+              onFocus={() => prefetchRouteLottie(l.to)}
               className="rounded-2xl px-4 py-2.5 text-start font-sans text-xs font-black tracking-[0.2em] uppercase text-foreground hover:bg-foreground/10"
             >
               {tr(l.key)}
