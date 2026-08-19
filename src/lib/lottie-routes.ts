@@ -20,15 +20,13 @@ const warmed = new Set<string>();
 
 /** Warm the animations a route needs. Safe to call repeatedly. */
 export function prefetchRouteLottie(path: string) {
+  if (typeof window === "undefined") return;
   if (warmed.has(path)) return;
   warmed.add(path);
   const run = () => (ROUTE_LOTTIE[path] ?? []).forEach(prefetchLottie);
-  if (typeof window === "undefined") return;
-  if ("requestIdleCallback" in window) {
-    (window as unknown as {
-      requestIdleCallback: (cb: () => void, o?: { timeout: number }) => void;
-    }).requestIdleCallback(run, { timeout: 1200 });
-  } else {
-    window.setTimeout(run, 0);
-  }
+  const idle = (window as unknown as {
+    requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void;
+  }).requestIdleCallback;
+  if (idle) idle(run, { timeout: 1200 });
+  else window.setTimeout(run, 0);
 }
