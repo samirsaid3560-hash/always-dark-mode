@@ -9,7 +9,11 @@ import { prefetchLottie } from "@/lib/lottie-cache";
  * `lottie-cache`, so warming is free if the asset was seen before.
  */
 export const ROUTE_LOTTIE: Record<string, readonly string[]> = {
-  "/": [],
+  "/": [
+    "/lottie/cred-education.lottie",
+    "/lottie/cred-certification.lottie",
+    "/lottie/cred-award.lottie",
+  ],
   "/about": ["/lottie/about-side.lottie"],
   "/skills": ["/lottie/skills-side.lottie"],
   "/experience": ["/lottie/experience-side.lottie"],
@@ -24,9 +28,11 @@ export function prefetchRouteLottie(path: string) {
   if (warmed.has(path)) return;
   warmed.add(path);
   const run = () => (ROUTE_LOTTIE[path] ?? []).forEach(prefetchLottie);
-  const idle = (window as unknown as {
-    requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void;
-  }).requestIdleCallback;
+  const idle = (
+    window as unknown as {
+      requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => void;
+    }
+  ).requestIdleCallback;
   if (idle) idle(run, { timeout: 1200 });
   else window.setTimeout(run, 0);
 }
